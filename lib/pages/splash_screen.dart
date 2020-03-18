@@ -1,8 +1,9 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp/services/AuthService.dart';
+
+import '../helper.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -59,13 +60,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   void navigateToHome() {
     Navigator.pushReplacementNamed(context, '/home');
-  }
-
-  Future<bool> checkInternetConnection() async {
-    ConnectivityResult result = await (new Connectivity().checkConnectivity());
-
-    return result == ConnectivityResult.mobile ||
-        result == ConnectivityResult.wifi;
   }
 
   @override
