@@ -36,12 +36,8 @@ class ProductService {
   static Future _saveAllProductsIntoSqlite(List<Product> lstProducts) async {
     var db = new ProductProvider();
     await db.open();
-    //we don't use foreach because it's not Future
-    //but map is of type Future and we need it because the work being done will take time
-    await Future.wait(lstProducts.map((product) async {
-      await db.insert(product);
-    }));
 
+    await db.insertAll(lstProducts);
 /*
 //this is bad way  according to https://flutter-academy.com/async-in-flutter-advanced-futures-api/
         Future.forEach(lstProducts, (product) async {

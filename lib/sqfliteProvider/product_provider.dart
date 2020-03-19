@@ -11,4 +11,13 @@ class ProductProvider extends Provider {
         conflictAlgorithm: conflictAlgorithm);
     return product;
   }
+
+  Future<bool> insertAll(List<Product> lstProducts) async {
+    //we don't use foreach because it's not Future
+    //but map is of type Future
+    //and we need it because the work being done will take time
+    await Future.wait(lstProducts.map((product) async {
+      await this.insert(product);
+    }));
+  }
 }
