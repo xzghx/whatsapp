@@ -5,15 +5,13 @@ class Provider {
   Database db;
   String _path;
 
-  Future open({String dbName: "watsapp.db"}) async {
+  Future open({String dbName: "whatsapp.db"}) async {
     String databasesPath = await getDatabasesPath();
     _path = join(databasesPath, dbName);
 
-    db = await openDatabase(_path, version: 1, onCreate: onCreateDatabase);
-  }
-
-  Future onCreateDatabase(Database db, int version) async {
-    await db.execute('''
+    db = await openDatabase(_path, version: 1,
+        onCreate: (Database db, int version) async {
+      await db.execute('''
                   create table products ( 
                       id integer primary key autoincrement, 
                       user_id integer not null,
@@ -24,5 +22,8 @@ class Provider {
                       created_at text not null,
                       updated_at text not null)
                   ''');
+    });
   }
+
+  Future close() => db.close();
 }
