@@ -1,26 +1,50 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:whatsapp/helper.dart';
 import 'package:whatsapp/models/Product.dart';
+import 'package:whatsapp/sqfliteProvider/product_provider.dart';
 
 class ProductService {
   static Future<Map> getProducts(int page) async {
-    List<Product> lstProducts = [];
+    if (await checkInternetConnection())
+      return _getAllProductsFromNetwork(page);
+  }
 
+  static Future<Map> _getAllProductsFromNetwork(int page) async {
     var response = await http.get("http://roocket.org/api/products?page=$page");
 
-    var responseBody = json.decode(response.body)['data'];
+    if (response.statusCode == 200) {
+      var responseBody = json.decode(response.body)['data'];
 
-    responseBody['data'].forEach((item) {
-      //each item has Product fields but it's a map not a Product instance
-      lstProducts.add(Product.fromJson(item));
-    });
+      List<Product> lstProducts = [];
+      responseBody['data'].forEach((item) {
+        //each item has Product fields but it's a map not a Product instance
+        lstProducts.add(Product.fromJson(item));
+      });
+      //after getting all Products from server , save them in local sqlite
+      await _saveAllProductsIntoSqlite(lstProducts);
 
-    return {
-      "current_page": responseBody['current_page'],
-      "products": lstProducts,
-    };
+      return {
+        "current_page": responseBody['current_page'],
+        "products": lstProducts,
+      };
+    }
+    return null;
   }
+
+  static Future _saveAllProductsIntoSqlite(List<Product> lstProducts) async {
+    var db = new ProductProvider();
+    await db.open();
+
+    //we don't use foreach because it's not Future
+    //but map is of type Future and we need it because the work being done will take time
+    lstProducts.map((product) async {
+      await db.insert(product);
+    });
+  }
+
+  static Future<Map> _getAllProductsFromSqlite(int page) {}
 }
 
 ///responseBody:{data:{data:[
@@ -30,6 +54,9 @@ class ProductService {
 ///                         ...
 ///                         ]
 ///                    current_page:
+///                    .
+///                    .
+///                    some other  fields
 ///                    .
 ///                    .
 ///                    .
