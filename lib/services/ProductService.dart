@@ -8,7 +8,9 @@ import 'package:whatsapp/sqfliteProvider/product_provider.dart';
 class ProductService {
   static Future<Map> getProducts(int page) async {
     if (await checkInternetConnection())
-      return _getAllProductsFromNetwork(page);
+      return await _getAllProductsFromNetwork(page);
+    else
+      return await _getAllProductsFromSqlite(page);
   }
 
   static Future<Map> _getAllProductsFromNetwork(int page) async {
@@ -38,17 +40,17 @@ class ProductService {
     await db.open();
 
     await db.insertAll(lstProducts);
-/*
-//this is bad way  according to https://flutter-academy.com/async-in-flutter-advanced-futures-api/
-        Future.forEach(lstProducts, (product) async {
-      await db.insert(product);
-    });
-    */
 
     await db.close();
   }
 
-  static Future<Map> _getAllProductsFromSqlite(int page) {}
+  static Future<Map> _getAllProductsFromSqlite(int page) async {
+    var db = new ProductProvider();
+    await db.open();
+    List<Product> products = await db.paginate(page);
+    await db.close();
+    return {"current_page": page, "products": products};
+  }
 }
 
 ///responseBody:{data:{data:[

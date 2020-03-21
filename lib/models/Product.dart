@@ -5,8 +5,8 @@ class Product {
   String body;
   String image;
   String price;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String createdAt;
+  String updatedAt;
 
   //this is called namedConstructor
   //we can give name to each constructor ☺ like Product.myName1(String s) , Product.myName2(int i) ...
@@ -17,8 +17,8 @@ class Product {
     body = parsedJson['body'];
     image = parsedJson['image'];
     price = parsedJson['price'];
-    createdAt = parsedJson['createdAt'];
-    updatedAt = parsedJson['updatedAt'];
+    createdAt = parsedJson['created_at'];
+    updatedAt = parsedJson['updated_at'];
   }
 
   Map<String, dynamic> toMap() {
@@ -29,8 +29,8 @@ class Product {
       'body': body,
       'image': image,
       'price': price,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt
+      'created_at': createdAt,
+      'updated_at': updatedAt
     };
   }
 }

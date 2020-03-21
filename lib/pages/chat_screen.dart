@@ -29,7 +29,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                   leading: CircleAvatar(
                     backgroundColor: Colors.orangeAccent,
-                    backgroundImage: NetworkImage(dummyData[index].avatarUrl),
+//                    backgroundImage: NetworkImage(dummyData[index].avatarUrl),
                   ),
                 ),
               ),

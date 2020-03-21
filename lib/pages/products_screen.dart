@@ -9,8 +9,8 @@ class ProductsScreen extends StatefulWidget {
   State<StatefulWidget> createState() => ProductScreenState();
 }
 
-class ProductScreenState extends State<ProductsScreen>
-    with AutomaticKeepAliveClientMixin {
+//    with AutomaticKeepAliveClientMixin
+class ProductScreenState extends State<ProductsScreen> {
   //when switching between tabs ,when you coma back to product tab ,you will see that it's again downloading
   //the list. so to avoid re downloading just use " with AutomaticKeepAliveClientMixin"in this state
   //and return true in overridden method
