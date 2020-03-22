@@ -22,6 +22,12 @@ class Provider {
                       created_at text not null,
                       updated_at text not null)
                   ''');
+
+      await db.execute('''
+                  create table users ( 
+                      id integer primary key autoincrement, 
+                      api_token text not null)
+                  ''');
     });
   }
 

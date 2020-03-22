@@ -19,10 +19,12 @@ class SplashScreenState extends State<SplashScreen> {
 //  }
 
   checkLogin() async {
+
     //if user's data in not stored in preferences go to login page
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     String apiToken = pref.getString("user.apiToken");
-    navigateToHome();
+//    navigateToHome();
 //    if (apiToken == null) Navigator.pushReplacementNamed(context, "/login");
     //if has connection to internet should check stored user's apiKey in server
     if (await checkInternetConnection()) {
@@ -66,6 +68,7 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 //    startTimer();
+
     checkLogin();
   }
 

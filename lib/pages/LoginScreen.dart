@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp/animations/SignInButtonAnimation.dart';
 import 'package:whatsapp/components/FormContainer.dart';
 import 'package:whatsapp/services/AuthService.dart';
+import 'package:whatsapp/services/UserService.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -120,8 +121,9 @@ class LoginScreenState extends State<LoginScreen>
 //    print(result);
     if (result["status"] == "success") {
       //result: {status:""  ,data:{id:"" , apiKey:""}}
+      //store in shared preference
       storeUserData(result['data']);
-
+     UserService.storeUser(result['data']);
       await mControllerSignInButton.forward();
 
       Navigator.pushReplacementNamed(context, "/");
