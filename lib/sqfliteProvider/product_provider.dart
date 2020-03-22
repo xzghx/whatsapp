@@ -29,10 +29,13 @@ class ProductProvider extends Provider {
     return true;
   }
 
+  //
+  /// get each page Products
+  /// /
   Future<List<Product>> paginate(int page, {int limit: 8}) async {
     //read each page from db and return
     List<Map<String, dynamic>> maps = await db.query(tableName,
-        columns: ["id", "user_id", "title", "body","image"],
+        columns: ["id", "user_id", "title", "body", "image"],
         limit: limit,
         offset: page == 1 ? 0 : ((page - 1) * limit));
 
