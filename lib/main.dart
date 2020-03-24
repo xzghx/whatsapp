@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/MyHome.dart';
 import 'package:whatsapp/pages/LoginScreen.dart';
+import 'package:whatsapp/pages/map_screen.dart';
 import 'package:whatsapp/pages/new_chat_screen.dart';
-import 'package:whatsapp/pages/splash_screen.dart';
 
 void main() {
 //  WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +28,10 @@ class MyApp extends StatelessWidget {
         // "/" means home
         //if you define the first( initial page) here
         //so declaring home:.... for scaffold is not needed.
+//        "/": (context) => new Directionality(
+//            textDirection: TextDirection.rtl, child: new SplashScreen()),
         "/": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: new SplashScreen()),
+            textDirection: TextDirection.rtl, child: new MapScreen()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
         "/login": (context) => new Directionality(
