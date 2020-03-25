@@ -27,6 +27,7 @@ class _MapScreenState extends State<MapScreen> {
           title: Text("map"),
         ),
         body: Stack(
+          alignment: Alignment.bottomCenter,
           children: <Widget>[
             GoogleMap(
               mapType: MapType.hybrid,
@@ -36,7 +37,7 @@ class _MapScreenState extends State<MapScreen> {
             RaisedButton(
               onPressed: () {
                 _mapController.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(target: LatLng(36.314, 52.093))));
+                    CameraPosition(target: LatLng(36.314, 52.093),zoom: 6)));
               },
               child: Text("♥Go To Iran♥"),
             )
