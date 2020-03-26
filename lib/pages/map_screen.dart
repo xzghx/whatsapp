@@ -11,7 +11,7 @@ class _MapScreenState extends State<MapScreen> {
   MapType _currentMapType;
   Set<Marker> _markers = <Marker>{};
 
-  static final CameraPosition _cameraPosition = CameraPosition(
+  static  CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(10.12, 80.12),
     zoom: 8,
   );
@@ -20,7 +20,13 @@ class _MapScreenState extends State<MapScreen> {
     //this callback function gives us a  GoogleMapController which
     //then we can use to control map from other parts of code
     _mapController = controller;
-    //it's not needed to pass setState() because onMapCreated is someHowe a setState
+    //it's not needed to pass setState() because onMapCreated is someHow a setState
+  }
+
+  void _onCameraMoved(CameraPosition position) {
+    setState(() {
+      _cameraPosition = position;
+    });
   }
 
   void _onMapTypeButtonPressed() {
@@ -45,6 +51,7 @@ class _MapScreenState extends State<MapScreen> {
           alignment: Alignment.topCenter,
           children: <Widget>[
             GoogleMap(
+              onCameraMove: _onCameraMoved,
               markers: _markers,
               mapType: _currentMapType,
               initialCameraPosition: _cameraPosition,
@@ -65,7 +72,7 @@ class _MapScreenState extends State<MapScreen> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    "موقعیت : ${_cameraPosition.target.longitude} , ${_cameraPosition.target.latitude}",
+                    "موقعیت : ${_cameraPosition.target.longitude.toStringAsFixed(3)} , ${_cameraPosition.target.latitude.toStringAsFixed(3)}",
                     style: TextStyle(
                         color: Colors.black87, fontWeight: FontWeight.bold),
                   ),
