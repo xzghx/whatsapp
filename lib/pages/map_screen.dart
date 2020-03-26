@@ -42,7 +42,7 @@ class _MapScreenState extends State<MapScreen> {
           title: Text("map"),
         ),
         body: Stack(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.topCenter,
           children: <Widget>[
             GoogleMap(
               markers: _markers,
@@ -59,6 +59,18 @@ class _MapScreenState extends State<MapScreen> {
                     CameraPosition(target: LatLng(36.314, 52.093), zoom: 6)));
               },
               child: Text("♥Go To Iran♥"),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "موقعیت : ${_initialPosition.target.longitude} , ${_initialPosition.target.latitude}",
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
             Padding(
                 padding: EdgeInsets.only(left: 16, bottom: 10),
