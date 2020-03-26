@@ -11,7 +11,7 @@ class _MapScreenState extends State<MapScreen> {
   MapType _currentMapType;
   Set<Marker> _markers = <Marker>{};
 
-  static final CameraPosition _initialPosition = CameraPosition(
+  static final CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(10.12, 80.12),
     zoom: 8,
   );
@@ -47,7 +47,7 @@ class _MapScreenState extends State<MapScreen> {
             GoogleMap(
               markers: _markers,
               mapType: _currentMapType,
-              initialCameraPosition: _initialPosition,
+              initialCameraPosition: _cameraPosition,
               onMapCreated: _googleMapController,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    "موقعیت : ${_initialPosition.target.longitude} , ${_initialPosition.target.latitude}",
+                    "موقعیت : ${_cameraPosition.target.longitude} , ${_cameraPosition.target.latitude}",
                     style: TextStyle(
                         color: Colors.black87, fontWeight: FontWeight.bold),
                   ),
