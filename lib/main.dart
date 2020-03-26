@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/MyHome.dart';
 import 'package:whatsapp/pages/LoginScreen.dart';
-import 'package:whatsapp/pages/map_screen.dart';
 import 'package:whatsapp/pages/new_chat_screen.dart';
+import 'package:whatsapp/pages/second_map_screen.dart';
 
 void main() {
 //  WidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +30,10 @@ class MyApp extends StatelessWidget {
         //so declaring home:.... for scaffold is not needed.
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new SplashScreen()),
+//        "/": (context) => new Directionality(
+//            textDirection: TextDirection.rtl, child: new MapScreen()),
         "/": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: new MapScreen()),
+            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
         "/login": (context) => new Directionality(
