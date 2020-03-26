@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -32,7 +33,7 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
       location = await _location.getLocation();
       error = null;
     } //Exception will happen if permission not granted
-    catch (e) {
+    on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') error = "permission denied";
       if (e.code == 'PERMISSION_DENIED_NEVER_ASK')
         error =
