@@ -11,7 +11,7 @@ class _MapScreenState extends State<MapScreen> {
   MapType _currentMapType;
   Set<Marker> _markers = <Marker>{};
 
-  static  CameraPosition _cameraPosition = CameraPosition(
+  static CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(10.12, 80.12),
     zoom: 8,
   );
@@ -60,6 +60,7 @@ class _MapScreenState extends State<MapScreen> {
               myLocationButtonEnabled: true,
               onTap: _myAddMarker,
             ),
+            //press to go to iran
             RaisedButton(
               onPressed: () {
                 _mapController.animateCamera(CameraUpdate.newCameraPosition(
