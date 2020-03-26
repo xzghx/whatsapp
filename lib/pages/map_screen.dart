@@ -73,7 +73,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(left: 16, bottom: 10),
+                padding: EdgeInsets.only(left: 16, bottom: 66),
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Column(
@@ -91,11 +91,6 @@ class _MapScreenState extends State<MapScreen> {
                         onPressed: null,
                         backgroundColor: Colors.green,
                         child: Icon(Icons.add_location),
-                      ),
-                      FloatingActionButton(
-                        onPressed: null,
-                        backgroundColor: Colors.green,
-                        child: Icon(Icons.remove),
                       ),
                     ],
                   ),
