@@ -20,10 +20,22 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
 
   @override
   void initState() {
+    super.initState();
     //1- find Start location
     //2- find location changes
     initPlatformState();
-    super.initState();
+    _location.onLocationChanged().listen((LocationData currentLocation) {
+      // Use current location
+      _currentLocation = currentLocation;
+
+      //animate camera when user moves
+      if (_mapController != null) {
+        _mapController.animateCamera(CameraUpdate.newCameraPosition(
+            new CameraPosition(
+                target: LatLng(
+                    currentLocation.latitude, currentLocation.longitude))));
+      }
+    });
   }
 
   initPlatformState() async {
@@ -45,7 +57,7 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
     setState(() {
       _startLocation = location;
       _position = new CameraPosition(
-          target: LatLng(location.latitude, location.longitude), zoom: 18);
+          target: LatLng(location.latitude, location.longitude), zoom: 10);
     });
   }
 
@@ -59,6 +71,12 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
       });
     }
 
+    void _onCameraMoved(CameraPosition position) {
+      setState(() {
+        _position = position;
+      });
+    }
+
     List<Widget> bodyWidgets = new List();
     bodyWidgets.add(new SizedBox(
         width: device.width,
@@ -68,6 +86,7 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
                 initialCameraPosition: _position,
                 onMapCreated: _onMapCreated,
                 myLocationEnabled: true,
+                onCameraMove: _onCameraMoved,
               )
             : SizedBox()));
     bodyWidgets.add(Center(
@@ -82,6 +101,7 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
         child: Text(_permission != PermissionStatus.DENIED
             ? "دسترسی به مکان دارد"
             : "مجوز دسترسی به مکان داده نشد.")));
+    bodyWidgets.add(Center(child: Text("camera position : $_position")));
     bodyWidgets.add(RaisedButton(
       child: Text("Go Iran"),
       onPressed: () {
