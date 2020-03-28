@@ -88,6 +88,7 @@ class _MapScreenState extends State<MapScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       FloatingActionButton(
+                        heroTag: null,
                         onPressed: _onMapTypeButtonPressed,
                         backgroundColor: Colors.green,
                         child: Icon(Icons.map),
@@ -96,6 +97,7 @@ class _MapScreenState extends State<MapScreen> {
                         height: 10,
                       ),
                       FloatingActionButton(
+                        heroTag: null,
                         onPressed: null,
                         backgroundColor: Colors.green,
                         child: Icon(Icons.add_location),

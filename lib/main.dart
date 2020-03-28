@@ -32,8 +32,10 @@ class MyApp extends StatelessWidget {
 //            textDirection: TextDirection.rtl, child: new SplashScreen()),
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new MapScreen()),
+//        "/": (context) => new Directionality(
+//            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
         "/": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
+            textDirection: TextDirection.rtl, child: MyHome()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
         "/login": (context) => new Directionality(

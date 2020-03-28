@@ -27,7 +27,6 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
     _location.onLocationChanged().listen((LocationData currentLocation) {
       // Use current location
       _currentLocation = currentLocation;
-
       //animate camera when user moves
       if (_mapController != null) {
         _mapController.animateCamera(CameraUpdate.newCameraPosition(
@@ -57,7 +56,7 @@ class _MapLocationScreenState extends State<MapLocationScreen> {
     setState(() {
       _startLocation = location;
       _position = new CameraPosition(
-          target: LatLng(location.latitude, location.longitude), zoom: 10);
+          target: LatLng(location.latitude, location.longitude), zoom: 5);
     });
   }
 

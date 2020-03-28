@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whatsapp/components/DrawerLayout.dart';
 import 'package:whatsapp/pages/calls_screen.dart';
 import 'package:whatsapp/pages/camera_screen.dart';
 import 'package:whatsapp/pages/chat_screen.dart';
@@ -166,6 +167,7 @@ class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
+          drawer: buildDrawer(context),
           body: NestedScrollView(
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
