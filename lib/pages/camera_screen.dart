@@ -78,7 +78,12 @@ class CameraScreenState extends State<CameraScreen> {
       textDirection: TextDirection.rtl,
     )));
   }
-
+  @override
+  void dispose() {
+    // Dispose of the controller when the widget is disposed.
+    _cameraController.dispose();
+    super.dispose();
+  }
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
