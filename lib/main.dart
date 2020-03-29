@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/MyHome.dart';
 import 'package:whatsapp/pages/LoginScreen.dart';
+import 'package:whatsapp/pages/camera_screen.dart';
 import 'package:whatsapp/pages/new_chat_screen.dart';
-import 'package:whatsapp/pages/second_map_screen.dart';
 
 void main() {
 //  WidgetsFlutterBinding.ensureInitialized();
@@ -34,8 +34,10 @@ class MyApp extends StatelessWidget {
 //            textDirection: TextDirection.rtl, child: new MapScreen()),
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
+//        "/": (context) => new Directionality(
+//            textDirection: TextDirection.rtl, child: MyHome()),
         "/": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: MyHome()),
+            textDirection: TextDirection.rtl, child: CameraScreen()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
         "/login": (context) => new Directionality(
