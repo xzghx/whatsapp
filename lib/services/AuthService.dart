@@ -17,7 +17,7 @@ class AuthService {
 
   static Future<bool> checkUserApi(String userToken) async {
     final result = await http.get(
-        "http://roocket.org/api/user?api_token=${userToken}",
+        "http://roocket.org/api/user?api_token=$userToken",
         headers: {'Accept': 'application/json'});
 
     return result.statusCode == 200;
