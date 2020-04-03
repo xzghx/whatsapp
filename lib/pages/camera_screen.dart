@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -7,11 +10,12 @@ class CameraScreen extends StatefulWidget {
 }
 
 class CameraScreenState extends State<CameraScreen> {
+  List<Map> files = [];
   CameraController _cameraController;
 
   //list of device's cameras ( Front camera & Rear camera)
   List<CameraDescription> _cameras = new List<CameraDescription>();
-
+  CameraDescription _cameraDescription; //Store The Selected camera.
   @override
   void initState() {
     super.initState();
@@ -40,6 +44,9 @@ class CameraScreenState extends State<CameraScreen> {
           camera,
           // Define the resolution to use.
           ResolutionPreset.high);
+
+      //Store The Selected camera.
+      _cameraDescription = camera;
     });
 
     _cameraController.addListener(() {
@@ -77,12 +84,14 @@ class CameraScreenState extends State<CameraScreen> {
       textDirection: TextDirection.rtl,
     )));
   }
+
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
     _cameraController.dispose();
     super.dispose();
   }
+
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -136,21 +145,84 @@ class CameraScreenState extends State<CameraScreen> {
                       icon: new Icon(Icons.switch_camera),
                       iconSize: 36,
                       color: Colors.white,
-                      onPressed: () {}),
-                  new IconButton(
-                      icon: new Icon(Icons.add_circle),
-                      iconSize: 65,
-                      color: Colors.white,
-                      onPressed: () {}),
+                      focusColor: Colors.greenAccent,
+                      hoverColor: Colors.red,
+                      onPressed: _cameraSwitchToggle),
+                  new GestureDetector(
+                    onTap: _onTakePictureButtonPressed,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: _cameraController != null &&
+                                      _cameraController.value.isRecordingVideo
+                                  ? Colors.redAccent
+                                  : Colors.white,
+                              width: 4),
+                          shape: BoxShape.circle),
+                    ),
+                  ),
                   new IconButton(
                       icon: new Icon(Icons.flash_off),
                       iconSize: 36,
                       color: Colors.white,
                       onPressed: () {}),
                 ],
+              ),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 16, top: 8),
+                child: Text(
+                  "برای عکس ضربه بزنید،برای فیلم نگه دارید.",
+                  style: TextStyle(color: Colors.greenAccent),
+                ),
               )
             ],
           ),
         ));
   }
+
+  /// toggle camera to front or rear
+  /// only if device has more than one camera
+  void _cameraSwitchToggle() {
+    if (_cameras.length >= 2) {
+      initCameraController(
+          camera:
+              _cameraDescription == _cameras[0] ? _cameras[1] : _cameras[0]);
+      //Note:
+      //_cameraDescription is The Selected Camera
+      //_cameras is list of available cameras in device
+    } else {
+      showSnackBar("شما قادر به تغییر دوربین نیستید.");
+    }
+  }
+
+  void _onTakePictureButtonPressed() async {
+    String filePath = await takePicture();
+    setState(() {
+      files.add({'type': 'image', 'path': filePath});
+    });
+    showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
+  }
+
+  Future<String> takePicture() async {
+    //get app's directory
+    Directory extDir = await getExternalStorageDirectory();
+    //define dir
+    String dirPath = '$extDir/pictureswhatsappZahra';
+    //create dir
+    await Directory(dirPath).create(recursive: true);
+    //create path
+    String filePath = '$dirPath/${timeStamp()}.jpg';
+
+    try {
+      await _cameraController.takePicture(filePath);
+    } on CameraException catch (e) {
+      showCameraException(e);
+      return null;
+    }
+    return filePath;
+  }
+
+  String timeStamp() => new DateTime.now().millisecondsSinceEpoch.toString();
 }

@@ -30,7 +30,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _onMapTypeButtonPressed() {
-    /*Way 1*/
+//Way 1
+
     if (_currentMapType == MapType.normal) {
       setState(() {
         _currentMapType = MapType.satellite;
