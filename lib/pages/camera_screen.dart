@@ -199,11 +199,24 @@ class CameraScreenState extends State<CameraScreen> {
   }
 
   void _onTakePictureButtonPressed() async {
-    if (!await Permission.storage.request().isGranted) {
+    if (await Permission.storage.request().isGranted) {
+      String filePath = await takePicture();
+//      if (filePath != null) {
+      setState(() {
+        files.add({'type': 'image', 'path': filePath});
+      });
+      showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
+//      }
+    }
+   else if (await Permission.storage.isPermanentlyDenied) {
 //      showSnackBar("اجازه ی دسترسی به حافظه برای ذخیره ی تصویر لازم است");
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
           content: new Row(
         children: <Widget>[
+          new Text(
+            "دسترسی به حافظه برای ذخیره ی تصاویر نیاز است.",
+            style: TextStyle(fontFamily: "Vazir"),
+          ),
           new FlatButton(
               onPressed: () async {
                 if (await Permission.storage.isPermanentlyDenied) {
@@ -213,17 +226,10 @@ class CameraScreenState extends State<CameraScreen> {
                   openAppSettings();
                 }
               },
-              child: Text("دسترسی میدم"))
+              child: Text("تنظیمات"))
         ],
       )));
       return;
-    }
-    if (await Permission.storage.request().isGranted) {
-      String filePath = await takePicture();
-      setState(() {
-        files.add({'type': 'image', 'path': filePath});
-      });
-      showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
     }
   }
 
