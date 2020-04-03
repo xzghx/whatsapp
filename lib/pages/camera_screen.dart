@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -198,21 +199,42 @@ class CameraScreenState extends State<CameraScreen> {
   }
 
   void _onTakePictureButtonPressed() async {
-    String filePath = await takePicture();
-    setState(() {
-      files.add({'type': 'image', 'path': filePath});
-    });
-    showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
+    if (!await Permission.storage.request().isGranted) {
+//      showSnackBar("اجازه ی دسترسی به حافظه برای ذخیره ی تصویر لازم است");
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          content: new Row(
+        children: <Widget>[
+          new FlatButton(
+              onPressed: () async {
+                if (await Permission.storage.isPermanentlyDenied) {
+                  // The user opted to never again see the permission request dialog for this
+                  // app. The only way to change the permission's status now is to let the
+                  // user manually enable it in the system settings.
+                  openAppSettings();
+                }
+              },
+              child: Text("دسترسی میدم"))
+        ],
+      )));
+      return;
+    }
+    if (await Permission.storage.request().isGranted) {
+      String filePath = await takePicture();
+      setState(() {
+        files.add({'type': 'image', 'path': filePath});
+      });
+      showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
+    }
   }
 
   Future<String> takePicture() async {
     //get app's directory
     Directory extDir = await getExternalStorageDirectory();
-    //define dir
-    String dirPath = '$extDir/pictureswhatsappZahra';
-    //create dir
-    await Directory(dirPath).create(recursive: true);
-    //create path
+//    //define dir
+    String dirPath = '${extDir.path}/pictures';
+//    create dir
+    await new Directory(dirPath).create(recursive: true);
+//    create path
     String filePath = '$dirPath/${timeStamp()}.jpg';
 
     try {
