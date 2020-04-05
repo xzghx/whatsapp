@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:video_thumbnail/video_thumbnail.dart' as videoThumb;
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -11,12 +12,14 @@ class CameraScreen extends StatefulWidget {
 }
 
 class CameraScreenState extends State<CameraScreen> {
-  List<Map> files = [];
+  List<Map> _files = [];
   CameraController _cameraController;
 
   //list of device's cameras ( Front camera & Rear camera)
   List<CameraDescription> _cameras = new List<CameraDescription>();
   CameraDescription _cameraDescription; //Store The Selected camera.
+  String tmpVideoFilePath;
+
   @override
   void initState() {
     super.initState();
@@ -139,6 +142,7 @@ class CameraScreenState extends State<CameraScreen> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+              //Switch Cameras , Capture Button , Flash
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -151,6 +155,8 @@ class CameraScreenState extends State<CameraScreen> {
                       onPressed: _cameraSwitchToggle),
                   new GestureDetector(
                     onTap: _onTakePictureButtonPressed,
+                    onLongPress: _onStartVideoRecording,
+                    onLongPressUp: _onStopVideoRecording,
                     child: Container(
                       width: 60,
                       height: 60,
@@ -171,6 +177,7 @@ class CameraScreenState extends State<CameraScreen> {
                       onPressed: () {}),
                 ],
               ),
+              //help Text
               new Padding(
                 padding: EdgeInsets.only(bottom: 16, top: 8),
                 child: Text(
@@ -203,12 +210,11 @@ class CameraScreenState extends State<CameraScreen> {
       String filePath = await takePicture();
 //      if (filePath != null) {
       setState(() {
-        files.add({'type': 'image', 'path': filePath});
+        _files.add({'type': 'image', 'path': filePath});
       });
       showSnackBar("تصویر در ادرس زیر ذخیره شد:/n $filePath");
 //      }
-    }
-   else if (await Permission.storage.isPermanentlyDenied) {
+    } else if (await Permission.storage.isPermanentlyDenied) {
 //      showSnackBar("اجازه ی دسترسی به حافظه برای ذخیره ی تصویر لازم است");
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
           content: new Row(
@@ -253,4 +259,60 @@ class CameraScreenState extends State<CameraScreen> {
   }
 
   String timeStamp() => new DateTime.now().millisecondsSinceEpoch.toString();
+
+  Future _onStartVideoRecording() async {
+    //if is recording return
+    if (_cameraController.value.isRecordingVideo) {
+      showSnackBar('دوربین در حال ضبط ویدئو است.');
+      return;
+    }
+    Directory extDir = await getExternalStorageDirectory();
+    String dir = '${extDir.path}/movies';
+    await Directory(dir).create(recursive: true);
+    String filePath = '$dir/${timeStamp()}.mp4';
+    try {
+      await _cameraController.startVideoRecording(filePath);
+    } on CameraException catch (e) {
+      showCameraException(e);
+    }
+
+    setState(() {
+      tmpVideoFilePath = filePath;
+    });
+  }
+
+  Future _onStopVideoRecording() async {
+    if (!_cameraController.value.isRecordingVideo) {
+      showSnackBar('دوربینی ضبط نبود');
+      return;
+    }
+    try {
+      _cameraController.stopVideoRecording();
+    } on CameraException catch (e) {
+      showCameraException(e);
+    }
+
+    if (tmpVideoFilePath == null) {
+      showSnackBar('فایلی برای متوقف شدن وجود ندارد.');
+      return;
+    }
+
+//    final Directory tmpDir = await getTemporaryDirectory();
+
+    final thumb = await videoThumb.VideoThumbnail.thumbnailData(
+      video: tmpVideoFilePath,
+      imageFormat: videoThumb.ImageFormat.JPEG,
+      maxWidth: 128,
+      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      quality: 25,
+    );
+
+    setState(() {
+      _files.add({'type': 'video', 'path': tmpVideoFilePath, 'thumb': thumb});
+
+      showSnackBar('ویدیو در مسیر زیر ذخیره شد.\n\n$tmpVideoFilePath');
+
+      tmpVideoFilePath = null;
+    });
+  }
 }
