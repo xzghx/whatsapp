@@ -21,7 +21,7 @@ class Provider {
                       price text not null,
                       created_at text not null,
                       updated_at text not null)
-                  ''');
+                   ''');
 
       await db.execute('''
                   create table users ( 

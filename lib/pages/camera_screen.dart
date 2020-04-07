@@ -4,7 +4,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_thumbnail/video_thumbnail.dart' as videoThumb;
+import 'package:video_thumbnail/video_thumbnail.dart' as prefix;
+import 'package:whatsapp/pages/ViewFileScreen.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -105,7 +106,7 @@ class CameraScreenState extends State<CameraScreen> {
       body: Stack(
         children: <Widget>[
           _cameraPreviewWidget(),
-          _cameraBottomWidgets(),
+          _cameraBottomWidgets(context),
         ],
       ),
     );
@@ -132,7 +133,8 @@ class CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  Widget _cameraBottomWidgets() {
+  Widget _cameraBottomWidgets(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return new Align(
         alignment: Alignment.bottomCenter,
         child: new Padding(
@@ -142,6 +144,57 @@ class CameraScreenState extends State<CameraScreen> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+              //captured images and videos
+              new Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: SizedBox(
+                  width: screenSize.width,
+                  height: 60,
+                  child: new ListView.builder(
+                    reverse: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      Map file = _files[index];
+                      String type = file['type'];
+                      //file['thumb'] is of dataType Uint8list and file['path'] is of dataType String
+                      String imagePath =
+                          (type == 'image') ? file['path'] : file['thumb'];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      new ViewFileScreen(_files[index])));
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: SizedBox(
+                                width: 70,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: <Widget>[
+                                    Image.file(
+                                      File(imagePath),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    type == 'video'
+                                        ? new Align(
+                                            alignment: Alignment.center,
+                                            child: new Icon(
+                                              Icons.camera_alt,
+                                              color: Colors.tealAccent,
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
+                                ))),
+                      );
+                    },
+                    itemCount: _files.length,
+                  ),
+                ),
+              ),
               //Switch Cameras , Capture Button , Flash
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -266,7 +319,7 @@ class CameraScreenState extends State<CameraScreen> {
       showSnackBar('دوربین در حال ضبط ویدئو است.');
       return;
     }
-    Directory extDir = await getExternalStorageDirectory();
+    Directory extDir = await getApplicationDocumentsDirectory();
     String dir = '${extDir.path}/movies';
     await Directory(dir).create(recursive: true);
     String filePath = '$dir/${timeStamp()}.mp4';
@@ -282,35 +335,36 @@ class CameraScreenState extends State<CameraScreen> {
   }
 
   Future _onStopVideoRecording() async {
-    if (!_cameraController.value.isRecordingVideo) {
-      showSnackBar('دوربینی ضبط نبود');
-      return;
-    }
-    try {
-      _cameraController.stopVideoRecording();
-    } on CameraException catch (e) {
-      showCameraException(e);
-    }
+    await _cameraController.stopVideoRecording();
+//    try {
+//
+//    } on CameraException catch (e) {
+//      showCameraException(e);
+//    }
 
     if (tmpVideoFilePath == null) {
-      showSnackBar('فایلی برای متوقف شدن وجود ندارد.');
+      showSnackBar('no video to stop');
       return;
     }
 
-//    final Directory tmpDir = await getTemporaryDirectory();
-
-    final thumb = await videoThumb.VideoThumbnail.thumbnailData(
+    Directory tmpDir = await getTemporaryDirectory();
+    String thumb = await (prefix.VideoThumbnail.thumbnailFile(
       video: tmpVideoFilePath,
-      imageFormat: videoThumb.ImageFormat.JPEG,
+      thumbnailPath: tmpDir.path,
+      imageFormat: prefix.ImageFormat.WEBP,
       maxWidth: 128,
       // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
       quality: 25,
-    );
+    ));
 
     setState(() {
-      _files.add({'type': 'video', 'path': tmpVideoFilePath, 'thumb': thumb});
+      _files.add({
+        'type': 'video',
+        'path': tmpVideoFilePath,
+        'thumb': thumb,
+      });
 
-      showSnackBar('ویدیو در مسیر زیر ذخیره شد.\n\n$tmpVideoFilePath');
+      showSnackBar('Video saved here :.\n\n$tmpVideoFilePath');
 
       tmpVideoFilePath = null;
     });
