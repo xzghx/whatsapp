@@ -34,11 +34,11 @@ class MyApp extends StatelessWidget {
 //            textDirection: TextDirection.rtl, child: new MapScreen()),
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
-//        "/": (context) => new Directionality(
-//            textDirection: TextDirection.rtl, child: MyHome()),
-        "/": (context) => CameraScreen(),
+        "/": (context) => new Directionality(
+            textDirection: TextDirection.rtl, child: MyHome()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
+        "/camera": (context) => CameraScreen(),
         "/login": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: LoginScreen()),
         "/new_chat": (context) => new NewChatScreen(),

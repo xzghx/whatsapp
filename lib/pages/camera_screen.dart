@@ -335,12 +335,11 @@ class CameraScreenState extends State<CameraScreen> {
   }
 
   Future _onStopVideoRecording() async {
-    await _cameraController.stopVideoRecording();
-//    try {
-//
-//    } on CameraException catch (e) {
-//      showCameraException(e);
-//    }
+    try {
+      await _cameraController.stopVideoRecording();
+    } on CameraException catch (e) {
+      showCameraException(e);
+    }
 
     if (tmpVideoFilePath == null) {
       showSnackBar('no video to stop');

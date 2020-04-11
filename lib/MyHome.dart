@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp/components/DrawerLayout.dart';
 import 'package:whatsapp/pages/calls_screen.dart';
-import 'package:whatsapp/pages/camera_screen.dart';
 import 'package:whatsapp/pages/chat_screen.dart';
 import 'package:whatsapp/pages/products_screen.dart';
 
@@ -16,16 +15,29 @@ class MyHome extends StatefulWidget {
 }
 
 class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
-  var myTabController;
+  TabController myTabController;
 
   String _currentAppBar = "mainAppBar";
   Map<String, SliverAppBar> appBarList;
+
+  @override
+  void dispose() {
+    //I'm Not Sure to Dispose or not
+  myTabController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     myTabController =
         new TabController(initialIndex: 1, length: 4, vsync: this);
+    myTabController.addListener(() {
+      if (myTabController.index == 0) {
+        myTabController.index = myTabController.previousIndex;
+        Navigator.pushNamed(context, '/camera');
+      }
+    });
 
     SliverAppBar mainAppBar = new SliverAppBar(
       pinned: true,
@@ -175,7 +187,7 @@ class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
               },
               body: _currentAppBar == "mainAppBar"
                   ? TabBarView(controller: myTabController, children: <Widget>[
-                      new CameraScreen(),
+                      Container(),
                       new ChatScreen(),
                       new ProductsScreen(),
                       new CallsScreen(),
