@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp/MyHome.dart';
 import 'package:whatsapp/pages/LoginScreen.dart';
 import 'package:whatsapp/pages/camera_screen.dart';
+import 'package:whatsapp/pages/image_picker_screen.dart';
 import 'package:whatsapp/pages/new_chat_screen.dart';
 import 'package:whatsapp/pages/socket_io_screen.dart';
-import 'package:image_picker/image_picker.dart';
 void main() {
 //  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
@@ -32,13 +32,9 @@ class MyApp extends StatelessWidget {
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new SplashScreen()),
 //        "/": (context) => new Directionality(
-//            textDirection: TextDirection.rtl, child: new MapScreen()),
-//        "/": (context) => new Directionality(
-//            textDirection: TextDirection.rtl, child: new MapLocationScreen()),
-//        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: MyHome()),
         "/": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: SocketIoScreen()),
+            textDirection: TextDirection.rtl, child: ImagePickerScreen()),
         "/home": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: MyHome()),
         "/camera": (context) => CameraScreen(),
