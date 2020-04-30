@@ -23,7 +23,10 @@ class MyApp extends StatelessWidget {
           primaryColor: new Color(0xff075e54),
           accentColor: new Color(0xff25d366),
           secondaryHeaderColor: Colors.purple),
-      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
       supportedLocales: [Locale('en', ''), Locale('fa', '')],
 //      home: new Directionality(
 //          textDirection: TextDirection.rtl, child: MyHome()),
@@ -35,8 +38,7 @@ class MyApp extends StatelessWidget {
 //            textDirection: TextDirection.rtl, child: new SplashScreen()),
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: MyHome()),
-        "/": (context) =>
-             ImagePickerScreen(),
+        "/": (context) => ImagePickerScreen(),
         "/home": (context) => new Directionality(textDirection: TextDirection.rtl, child: MyHome()),
         "/camera": (context) => CameraScreen(),
         "/login": (context) =>
