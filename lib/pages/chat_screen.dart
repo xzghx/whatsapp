@@ -29,6 +29,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                   leading: CircleAvatar(
                     backgroundColor: Colors.orangeAccent,
+                    child: Text(dummyData[index].name[0]),
 //                    backgroundImage: NetworkImage(dummyData[index].avatarUrl),
                   ),
                 ),
@@ -44,12 +45,7 @@ class ChatScreen extends StatelessWidget {
 
   openChatDetailScreen(ChatModel selectedChat, BuildContext context) async {
     final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new ChatDetailScreen(data: selectedChat)));
-
-
-
+        context, MaterialPageRoute(builder: (context) => new ChatDetailScreen(data: selectedChat)));
 
     Scaffold.of(context).showSnackBar(new SnackBar(content: Text(result)));
   }
