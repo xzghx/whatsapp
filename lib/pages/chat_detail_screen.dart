@@ -45,10 +45,6 @@ class ChatDetailScreen extends StatelessWidget {
                   new SizedBox(
                     width: 10,
                   ),
-                  new RaisedButton(
-                    onPressed: () {},
-                    child: new Text("صفحه ی بعدی"),
-                  )
                 ],
               )
             ],
