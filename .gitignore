@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+AndroidManifest.xml
 
 # IntelliJ related
 *.iml

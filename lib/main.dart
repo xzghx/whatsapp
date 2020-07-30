@@ -36,9 +36,9 @@ class MyApp extends StatelessWidget {
         //so declaring home:.... for scaffold is not needed.
 //        "/": (context) => new Directionality(
 //            textDirection: TextDirection.rtl, child: new SplashScreen()),
-//        "/": (context) => new Directionality(
-//            textDirection: TextDirection.rtl, child: MyHome()),
-        "/": (context) => ImagePickerScreen(),
+        "/": (context) => new Directionality(
+            textDirection: TextDirection.rtl, child: MyHome()),
+//        "/": (context) => ImagePickerScreen(),
         "/home": (context) => new Directionality(textDirection: TextDirection.rtl, child: MyHome()),
         "/camera": (context) => CameraScreen(),
         "/login": (context) =>

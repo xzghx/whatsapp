@@ -83,7 +83,7 @@ class LoginScreenState extends State<LoginScreen>
                 new FlatButton(
                     onPressed: () {},
                     child: new Text(
-                      "تا به حال عضو نشده اید؟عضویت",
+                      "تا به حال عضو نشده اید؟ عضویت",
                       style: TextStyle(
                           letterSpacing: 0.5, fontWeight: FontWeight.w400),
                     ))
