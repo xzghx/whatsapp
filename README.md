@@ -1,6 +1,13 @@
 # whatsapp
 
-A new Flutter application.
+A custom whatsapp.
+![menu and tabs](https://github.com/xzghx/whatsapp/blob/master/Gifs/whatsappTabs.gif)
+
+You can use camera , take picture and video and see them :
+![camera feature](https://github.com/xzghx/whatsapp/blob/master/Gifs/whatsappCamera.gif)
+
+You can also use google map :
+![google map feature](https://github.com/xzghx/whatsapp/blob/master/Gifs/whatsappGoogleMap.gif)
 
 ## Getting Started
 
