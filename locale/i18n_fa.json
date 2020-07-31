@@ -1,0 +1,11 @@
+{
+  "title": "واتساپ",
+  "email": "ایمیل کاربری",
+  "password": "رمز عبور",
+  "login_register_text": "تا به حال عضو نشده اید؟ عضویت",
+  "title_choose_image": "انتخاب تصویر",
+  "error_loading_image": "لود تصویر با خطا مواجه شد.",
+  "error_loading_video": "لود ویدیو بت خطا مواجه شد.",
+  "no_image_selected ": "هنوز تصویری انتخاب نشده.",
+  "no_video_selected": "هنوز ویدیویی انتخاب نشده."
+}

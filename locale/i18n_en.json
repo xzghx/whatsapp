@@ -1,0 +1,11 @@
+{
+  "title": "whatsapp",
+  "email": "email",
+  "password": "password",
+  "login_register_text": "Don't have any account? Register",
+  "title_choose_image":"Choose Image",
+  "error_loading_image":"error_loading_image",
+  "error_loading_video":"error_loading_video",
+  "no_image_selected ":"no image selected yet",
+  "no_video_selected":"no image selected yet"
+}
